@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %} Home {% endblock title %}
+{% block body %}
+ {% load static %}
+ <!-- Load the captcha template tags -->
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-8">
+            <img src="static/image/2.avif" class="d-block w-100" alt="...">
+
+        </div>
+        <div class="col-md-4 mt-3">
+            <h2 class="text-block"><b>Login</b></h2>
+            {% for message in messages %}
+                <div class="alert bg-light alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <strong></strong>{{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+            <form action="{% url 'handlesLogin' %}" method="post">
+                {% csrf_token %}
+                <label class="text-block mt-3">Username</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" required>
+                </div>
+                <label class="text-block mt-3">Password</label>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <!-- CAPTCHA Field -->
+                <div class="form-group">
+                    <label class="text-block mt-3">Captcha</label>
+                    <div class="captcha">
+                        {{form.captcha}}<!-- Render the CAPTCHA image -->
+                        {% comment %} <input type="text" class="form-control" name="captcha" required> {% endcomment %}
+                    </div>
+                </div>
+                <!-- End CAPTCHA Field -->
+
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-danger" type="submit">Login</button>
+                </div>
+                <br><br>
+                <p>Not a user? <a href="{% url 'HandlesSignup' %}">Signup</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+{% endblock body %}
